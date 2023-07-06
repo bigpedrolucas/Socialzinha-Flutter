@@ -1,3 +1,3 @@
-# social_app
+Socialzinha
 
-A new Flutter project.
+Um projeto pessoal para ajudar a organizar eventos/rolês
