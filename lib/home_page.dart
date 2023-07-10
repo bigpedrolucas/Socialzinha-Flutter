@@ -1,10 +1,7 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
+// ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:social_app/event_page.dart';
-import 'account_page.dart';
-import 'event_list_page.dart';
-import 'navigation_bar.dart';
+import 'events_list_page.dart';
 
 Color orangePrimary = const Color(0xFFFA8642);
 Color grayPrimary = const Color(0xFF989898);
@@ -19,23 +16,64 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _pageIndex = 0;
-
-  final List<Widget> _pages = [EventsListPage(), EventPage(), AccountPage()];
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-            extendBody: true,
-            body: _pages[_pageIndex],
-            bottomNavigationBar: CustomNavigationBar(
-              pageIndex: _pageIndex,
-              onTap: (index) {
-                setState(() {
-                  _pageIndex = index;
-                });
-              },
-            )));
+      extendBody: true,
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Colors.white,
+        label: Text("Evento", style: TextStyle(color: orangePrimary)),
+        icon: Icon(Icons.add, color: orangePrimary),
+        onPressed: () {
+          print("add pressed");
+        },
+      ),
+      body: EventsListPage(),
+      /*bottomNavigationBar: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(25),
+                  topLeft: Radius.circular(25),
+                ),
+                child: BottomNavigationBar(
+                    backgroundColor: Colors.white,
+                    showSelectedLabels: false,
+                    showUnselectedLabels: false,
+                    selectedFontSize: 6,
+                    iconSize: 25,
+                    currentIndex: _currentIndex,
+                    onTap: (index) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
+                    items: <BottomNavigationBarItem>[
+                      BottomNavigationBarItem(
+                        icon: Icon(
+                          Icons.home,
+                          color: grayPrimary,
+                        ),
+                        label: 'Página Inicial',
+                      ),
+                      BottomNavigationBarItem(
+                          icon: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: orangePrimary, shape: BoxShape.circle),
+                              padding: EdgeInsets.all(14),
+                              child: Icon(Icons.add, color: Colors.white),
+                            ),
+                          ),
+                          label: 'Novo Evento'),
+                      BottomNavigationBarItem(
+                        icon: Icon(
+                          Icons.person,
+                          color: grayPrimary,
+                        ),
+                        label: 'Perfil',
+                      ),
+                    ]))*/
+    ));
   }
 }

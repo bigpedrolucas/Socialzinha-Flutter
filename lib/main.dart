@@ -16,9 +16,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       home: HomePage(),
       initialRoute: '/',
-      routes: {
-        '/evento': (context) => EventPage()
-      },
+      routes: {'/event': (context) => EventDetailPage()},
     );
   }
 }

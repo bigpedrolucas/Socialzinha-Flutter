@@ -25,8 +25,10 @@ class _EventsListPageState extends State<EventsListPage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  CircleImage(
-                      'https://www.cnnbrasil.com.br/wp-content/uploads/sites/12/2022/08/Route-e1660761170377.jpg?w=876&h=484&crop=1'),
+                  CircleAvatar(
+                      radius: 28,
+                      backgroundImage: NetworkImage(
+                          'https://www.cnnbrasil.com.br/wp-content/uploads/sites/12/2022/08/Route-e1660761170377.jpg?w=876&h=484&crop=1')),
                   Padding(padding: EdgeInsets.only(top: 8)),
                   Text("Olá bigpedrolucas",
                       style: TextStyle(
@@ -55,8 +57,7 @@ class _EventsListPageState extends State<EventsListPage> {
               return Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: GestureDetector(
-                    onTap: () =>
-                        {Navigator.of(context).pushReplacementNamed('/evento')},
+                    onTap: () => {Navigator.pushNamed(context, '/event')},
                     child: Container(
                       width: 147,
                       height: 135,
@@ -132,26 +133,5 @@ class _EventsListPageState extends State<EventsListPage> {
         ],
       ),
     ));
-  }
-}
-
-class CircleImage extends StatelessWidget {
-  final String renderUrl;
-
-  const CircleImage(this.renderUrl, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 60,
-      height: 60,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: NetworkImage(renderUrl),
-        ),
-      ),
-    );
   }
 }
