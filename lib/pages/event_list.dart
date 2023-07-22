@@ -1,18 +1,23 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'home_page.dart';
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
+import '../providers/events.dart';
+import 'home.dart';
 
-class EventsListPage extends StatefulWidget {
-  const EventsListPage({super.key});
+class EventList extends StatefulWidget {
+  const EventList({super.key});
 
   @override
-  State<EventsListPage> createState() => _EventsListPageState();
+  State<EventList> createState() => _EventListState();
 }
 
-class _EventsListPageState extends State<EventsListPage> {
+class _EventListState extends State<EventList> {
   @override
   Widget build(BuildContext context) {
+    final Events events = Provider.of(context);
+
     return SingleChildScrollView(
         child: Container(
       color: orangePrimary,
@@ -48,12 +53,18 @@ class _EventsListPageState extends State<EventsListPage> {
           ),
           GridView.builder(
             padding: EdgeInsets.only(left: 4, right: 4),
-            itemCount: 12,
+            itemCount: events.count,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2),
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemBuilder: (context, index) {
+              String eventTitle = events.byIndex(index)['titulo'];
+              String dateTime = events.byIndex(index)['dataHora'];
+              DateTime parsedDateTime = DateTime.parse(dateTime);
+              String eventDate = DateFormat('dd/MM').format(parsedDateTime);
+              String eventHour = DateFormat('HH:mm').format(parsedDateTime);
+
               return Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: GestureDetector(
@@ -67,11 +78,12 @@ class _EventsListPageState extends State<EventsListPage> {
                           color: Colors.white),
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("Festinha na praia",
+                                  Text(eventTitle,
                                       style: TextStyle(
                                         color: graphitePrimary,
                                         fontFamily: 'Roboto',
@@ -102,7 +114,7 @@ class _EventsListPageState extends State<EventsListPage> {
                                               Icon(Icons.calendar_month,
                                                   color: orangePrimary,
                                                   size: 18),
-                                              Text("16/06",
+                                              Text(eventDate,
                                                   style: TextStyle(
                                                     color: graphitePrimary,
                                                     fontFamily: 'Roboto',
@@ -116,7 +128,7 @@ class _EventsListPageState extends State<EventsListPage> {
                                               Icon(Icons.query_builder,
                                                   color: orangePrimary,
                                                   size: 18),
-                                              Text("20:00",
+                                              Text(eventHour,
                                                   style: TextStyle(
                                                     color: graphitePrimary,
                                                     fontFamily: 'Roboto',

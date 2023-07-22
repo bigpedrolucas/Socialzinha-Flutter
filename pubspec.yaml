@@ -9,6 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  sqflite: ^2.2.8+4
+  provider:
+  intl:
 
 dev_dependencies:
   flutter_test:

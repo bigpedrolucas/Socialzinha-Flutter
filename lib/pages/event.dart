@@ -1,21 +1,19 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
-import 'home_page.dart';
+import 'home.dart';
 
-class EventDetailPage extends StatefulWidget {
-  const EventDetailPage({super.key});
+enum MenuItem { update, delete }
+
+class EventPage extends StatefulWidget {
+  const EventPage({super.key});
 
   @override
-  State<EventDetailPage> createState() => _EventDetailPageState();
+  State<EventPage> createState() => _EventPageState();
 }
 
-class _EventDetailPageState extends State<EventDetailPage> {
-  List images = [
-    'https://upload.wikimedia.org/wikipedia/commons/1/18/Mark_Zuckerberg_F8_2019_Keynote_%2832830578717%29_%28cropped%29.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Steve_Jobs_Headshot_2010-CROP2.jpg/640px-Steve_Jobs_Headshot_2010-CROP2.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Bill_Gates_2018.jpg/640px-Bill_Gates_2018.jpg'
-  ];
+class _EventPageState extends State<EventPage> {
+  MenuItem? selectedMenu;
 
   @override
   Widget build(BuildContext context) {
@@ -49,11 +47,26 @@ class _EventDetailPageState extends State<EventDetailPage> {
                                       .pushReplacementNamed('/')
                                 },
                               ),
-                              IconButton(
+                              PopupMenuButton<MenuItem>(
+                                initialValue: selectedMenu,
+                                onSelected: (value) {
+                                  if (value == MenuItem.update) {
+                                    Navigator.of(context)
+                                        .pushReplacementNamed('/event-form');
+                                  } else if (value == MenuItem.delete) {
+                                    print('delete button pressed');
+                                  }
+                                },
+                                itemBuilder: (context) => [
+                                  PopupMenuItem(value: MenuItem.update, child: Text('Editar')),
+                                  PopupMenuItem(value: MenuItem.delete, child: Text('Excluir')),
+                                ],
+                              )
+                              /*IconButton(
                                 icon: Icon(Icons.more_vert,
                                     color: Colors.white, size: 26),
                                 onPressed: () => {print("options pressed")},
-                              )
+                              )*/
                             ],
                           ),
                           Column(children: [
@@ -94,7 +107,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                           Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                for (int i = 0; i < images.length; i++)
+                                for (int i = 0; i < 3; i++)
                                   Align(
                                       widthFactor: 0.4,
                                       child: CircleAvatar(
@@ -102,8 +115,8 @@ class _EventDetailPageState extends State<EventDetailPage> {
                                           backgroundColor: orangePrimary,
                                           child: CircleAvatar(
                                               radius: 14,
-                                              backgroundImage:
-                                                  NetworkImage(images[i])))),
+                                              backgroundImage: NetworkImage(
+                                                  'https://i.pravatar.cc/150?img=$i')))),
                                 Align(
                                   widthFactor: 0.4,
                                   child: CircleAvatar(
@@ -127,7 +140,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 flex: 9,
                 child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.all(28),
+                    padding: EdgeInsets.only(top: 28, left: 28, right: 28),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
