@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'pages/event.dart';
 import 'pages/home.dart';
 import 'pages/event_form.dart';
@@ -25,6 +26,14 @@ class MainApp extends StatelessWidget {
           '/event': (context) => EventPage(),
           '/event-form': (context) => EventForm(),
         },
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('pt', 'BR'),
+          Locale('en', 'US'),
+        ],
       ),
     );
   }

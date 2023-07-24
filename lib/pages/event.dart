@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import '../providers/events.dart';
 import 'home.dart';
 
 enum MenuItem { update, delete }
@@ -17,6 +20,18 @@ class _EventPageState extends State<EventPage> {
 
   @override
   Widget build(BuildContext context) {
+    final Events events = Provider.of(context);
+    final routeArgs =
+        ModalRoute.of(context)?.settings.arguments as Map<String, int>;
+    final id = int.parse(routeArgs['id'].toString());
+
+    String eventTitle = events.byIndex(id)['titulo'];
+    String dateTime = events.byIndex(id)['dataHora'];
+    String eventLocal = events.byIndex(id)['local'];
+    DateTime parsedDateTime = DateTime.parse(dateTime);
+    String eventDate = DateFormat('dd MMM yyyy', 'pt_BR').format(parsedDateTime);
+    String eventHour = DateFormat('HH:mm').format(parsedDateTime);
+
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -49,17 +64,21 @@ class _EventPageState extends State<EventPage> {
                               ),
                               PopupMenuButton<MenuItem>(
                                 initialValue: selectedMenu,
-                                onSelected: (value) {
+                                onSelected: (value) async {
                                   if (value == MenuItem.update) {
                                     Navigator.of(context)
                                         .pushReplacementNamed('/event-form');
                                   } else if (value == MenuItem.delete) {
-                                    print('delete button pressed');
+                                    await events.deleteItem('evento', id);
                                   }
                                 },
                                 itemBuilder: (context) => [
-                                  PopupMenuItem(value: MenuItem.update, child: Text('Editar')),
-                                  PopupMenuItem(value: MenuItem.delete, child: Text('Excluir')),
+                                  PopupMenuItem(
+                                      value: MenuItem.update,
+                                      child: Text('Editar')),
+                                  PopupMenuItem(
+                                      value: MenuItem.delete,
+                                      child: Text('Excluir')),
                                 ],
                               )
                               /*IconButton(
@@ -71,7 +90,7 @@ class _EventPageState extends State<EventPage> {
                           ),
                           Column(children: [
                             Center(
-                                child: Text("Aniversário de Fulaninho",
+                                child: Text(eventTitle,
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 20,
@@ -82,7 +101,7 @@ class _EventPageState extends State<EventPage> {
                                 children: [
                                   Icon(Icons.location_on,
                                       color: Colors.white, size: 12),
-                                  Text("Av. Rio Branco, 432",
+                                  Text(eventLocal,
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 12,
@@ -90,14 +109,14 @@ class _EventPageState extends State<EventPage> {
                                 ]),
                             Padding(padding: EdgeInsets.only(top: 4)),
                             Center(
-                                child: Text("31 Mar, 2003",
+                                child: Text(eventDate,
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 12,
                                         fontWeight: FontWeight.bold))),
                             Padding(padding: EdgeInsets.only(top: 4)),
                             Center(
-                                child: Text("20:00h",
+                                child: Text('${eventHour}h',
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 12,

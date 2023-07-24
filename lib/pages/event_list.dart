@@ -68,7 +68,8 @@ class _EventListState extends State<EventList> {
               return Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: GestureDetector(
-                    onTap: () => {Navigator.pushNamed(context, '/event')},
+                    onTap: () =>
+                        {Navigator.of(context).pushNamed('/event', arguments: {'id': index})},
                     child: Container(
                       width: 147,
                       height: 135,

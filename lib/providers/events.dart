@@ -27,4 +27,9 @@ class Events with ChangeNotifier {
     await SQLHelper.createItem(event, data);
     _refreshEvents();
   }
+
+  Future<void> deleteItem(String table, int id) async {
+    await SQLHelper.deleteItem(table, id);
+    _refreshEvents();
+  }
 }
