@@ -1,9 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../providers/events.dart';
-import 'home.dart';
+
+import 'package:social_app/constants.dart';
 
 final TextEditingController _titleController = TextEditingController();
 final TextEditingController _locationController = TextEditingController();
@@ -21,12 +20,12 @@ class _EventFormState extends State<EventForm> {
 
   @override
   Widget build(BuildContext context) {
-    final Events events = Provider.of(context);
+    //final Events events = Provider.of(context);
 
     return SafeArea(
         child: Scaffold(
       body: Container(
-          color: orangePrimary,
+          color: AppColors.orangePrimary,
           child: Column(
             children: [
               TextField(
@@ -45,27 +44,31 @@ class _EventFormState extends State<EventForm> {
                     initialDate: today,
                     firstDate: DateTime(today.year),
                     lastDate: DateTime(today.year + 10),
-                  ).then((selectedDate) {
-                    if (selectedDate != null) {
-                      showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                      ).then((selectedTime) {
-                        if (selectedTime != null) {
-                          DateTime combinedDateTime = DateTime(
-                            selectedDate.year,
-                            selectedDate.month,
-                            selectedDate.day,
-                            selectedTime.hour,
-                            selectedTime.minute,
-                          );
+                  ).then(
+                    (selectedDate) {
+                      if (selectedDate != null) {
+                        showTimePicker(
+                          context: context,
+                          initialTime: TimeOfDay.now(),
+                        ).then(
+                          (selectedTime) {
+                            if (selectedTime != null) {
+                              DateTime combinedDateTime = DateTime(
+                                selectedDate.year,
+                                selectedDate.month,
+                                selectedDate.day,
+                                selectedTime.hour,
+                                selectedTime.minute,
+                              );
 
-                          _dateTimeController.text =
-                              combinedDateTime.toIso8601String();
-                        }
-                      },);
-                    }
-                  },);
+                              _dateTimeController.text =
+                                  combinedDateTime.toIso8601String();
+                            }
+                          },
+                        );
+                      }
+                    },
+                  );
                 },
                 decoration: InputDecoration(
                   labelText: 'Data e Hora',
@@ -73,12 +76,14 @@ class _EventFormState extends State<EventForm> {
               ),
               ElevatedButton(
                   onPressed: () async {
-                    Map<String, Object?> data = {
-                      'titulo': _titleController.text,
-                      'local': _locationController.text,
-                      'dataHora': _dateTimeController.text
-                    };
-                    await events.addItem('evento', data);
+                    // Navigator.of(context).popUntil((route) => route.isFirst);
+                    // Map<String, Object?> data = {
+                    //   'titulo': _titleController.text,
+                    //   'local': _locationController.text,
+                    //   'dataHora': _dateTimeController.text
+                    // };
+
+                    // await events.addItem('evento', data);
                   },
                   child: Text("Salvar"))
             ],

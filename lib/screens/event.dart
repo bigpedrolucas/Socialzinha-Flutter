@@ -3,8 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import '../providers/events.dart';
-import 'home.dart';
+import 'package:social_app/constants.dart';
 
 enum MenuItem { update, delete }
 
@@ -29,13 +28,14 @@ class _EventPageState extends State<EventPage> {
     String dateTime = events.byIndex(id)['dataHora'];
     String eventLocal = events.byIndex(id)['local'];
     DateTime parsedDateTime = DateTime.parse(dateTime);
-    String eventDate = DateFormat('dd MMM yyyy', 'pt_BR').format(parsedDateTime);
+    String eventDate =
+        DateFormat('dd MMM yyyy', 'pt_BR').format(parsedDateTime);
     String eventHour = DateFormat('HH:mm').format(parsedDateTime);
 
     return SafeArea(
       child: Scaffold(
         body: Container(
-            color: lightGray,
+            color: AppColors.lightGray,
             child: Column(children: [
               Expanded(
                 flex: 3,
@@ -43,7 +43,7 @@ class _EventPageState extends State<EventPage> {
                     padding: EdgeInsets.only(bottom: 6),
                     height: 200,
                     decoration: BoxDecoration(
-                        color: orangePrimary,
+                        color: AppColors.orangePrimary,
                         borderRadius: BorderRadius.only(
                           bottomRight: Radius.circular(32),
                           bottomLeft: Radius.circular(32),
@@ -69,7 +69,8 @@ class _EventPageState extends State<EventPage> {
                                     Navigator.of(context)
                                         .pushReplacementNamed('/event-form');
                                   } else if (value == MenuItem.delete) {
-                                    await events.deleteItem('evento', id);
+                                    // await events.deleteItem('evento', id);
+                                    // Navigator.of(context).popUntil((route) => route.isFirst);
                                   }
                                 },
                                 itemBuilder: (context) => [
@@ -90,7 +91,7 @@ class _EventPageState extends State<EventPage> {
                           ),
                           Column(children: [
                             Center(
-                                child: Text(eventTitle,
+                                child: Text("eventTitle",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 20,
@@ -101,7 +102,7 @@ class _EventPageState extends State<EventPage> {
                                 children: [
                                   Icon(Icons.location_on,
                                       color: Colors.white, size: 12),
-                                  Text(eventLocal,
+                                  Text("eventLocal",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 12,
@@ -109,14 +110,14 @@ class _EventPageState extends State<EventPage> {
                                 ]),
                             Padding(padding: EdgeInsets.only(top: 4)),
                             Center(
-                                child: Text(eventDate,
+                                child: Text("eventDate",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 12,
                                         fontWeight: FontWeight.bold))),
                             Padding(padding: EdgeInsets.only(top: 4)),
                             Center(
-                                child: Text('${eventHour}h',
+                                child: Text('eventHour',
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 12,
@@ -131,7 +132,7 @@ class _EventPageState extends State<EventPage> {
                                       widthFactor: 0.4,
                                       child: CircleAvatar(
                                           radius: 16,
-                                          backgroundColor: orangePrimary,
+                                          backgroundColor: AppColors.orangePrimary,
                                           child: CircleAvatar(
                                               radius: 14,
                                               backgroundImage: NetworkImage(
@@ -140,13 +141,13 @@ class _EventPageState extends State<EventPage> {
                                   widthFactor: 0.4,
                                   child: CircleAvatar(
                                       radius: 16,
-                                      backgroundColor: orangePrimary,
+                                      backgroundColor: AppColors.orangePrimary,
                                       child: CircleAvatar(
                                           radius: 14,
                                           backgroundColor: Colors.white,
                                           child: Text("+1",
                                               style: TextStyle(
-                                                  color: orangePrimary,
+                                                  color: AppColors.orangePrimary,
                                                   fontSize: 12,
                                                   fontFamily: 'Roboto',
                                                   fontWeight:
@@ -228,7 +229,7 @@ class _EventsByStatusWidgetState extends State<EventsByStatusWidget> {
               padding: EdgeInsets.zero,
               constraints: BoxConstraints(maxWidth: 30),
               iconSize: 26,
-              icon: Icon(Icons.add, color: orangePrimary),
+              icon: Icon(Icons.add, color: AppColors.orangePrimary),
               onPressed: () => {print("add task pressed")},
             ),
             const SizedBox(width: 8),
@@ -236,7 +237,7 @@ class _EventsByStatusWidgetState extends State<EventsByStatusWidget> {
               padding: EdgeInsets.zero,
               constraints: BoxConstraints(maxWidth: 30),
               iconSize: 26,
-              icon: Icon(Icons.more_vert, color: orangePrimary),
+              icon: Icon(Icons.more_vert, color: AppColors.orangePrimary),
               onPressed: () => {print("options pressed")},
             )
           ]),
@@ -289,13 +290,13 @@ class _EventsByStatusWidgetState extends State<EventsByStatusWidget> {
                                                   fontFamily: 'Roboto',
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.bold,
-                                                  color: graphitePrimary)),
+                                                  color: AppColors.graphitePrimary)),
                                           Text('2 observações',
                                               style: TextStyle(
                                                   fontFamily: 'Roboto',
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.bold,
-                                                  color: grayPrimary))
+                                                  color: AppColors.grayPrimary))
                                         ]),
                                   ),
                                   Align(

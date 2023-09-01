@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'pages/event.dart';
-import 'pages/home.dart';
-import 'pages/event_form.dart';
-import 'providers/events.dart';
+import 'package:social_app/models/database_provider.dart';
+import 'package:social_app/screens/event.dart';
+import 'package:social_app/screens/event_form.dart';
+import 'package:social_app/screens/home.dart';
 
 void main() {
   runApp(const MainApp());
@@ -18,9 +18,9 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => Events())],
+      providers: [ChangeNotifierProvider(create: (context) => DatabaseProvider())],
       child: MaterialApp(
-        home: HomePage(),
+        home: Home(),
         initialRoute: '/',
         routes: {
           '/event': (context) => EventPage(),

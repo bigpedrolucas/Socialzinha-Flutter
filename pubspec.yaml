@@ -12,6 +12,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   sqflite: ^2.2.8+4
+  path:
   provider:
   intl:
 
