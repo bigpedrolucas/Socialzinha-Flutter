@@ -1,12 +1,16 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:social_app/constants.dart';
 
-final TextEditingController _titleController = TextEditingController();
-final TextEditingController _locationController = TextEditingController();
-final TextEditingController _dateTimeController = TextEditingController();
+import '../models/database_provider.dart';
+import '../models/event.dart';
+
+final TextEditingController _title = TextEditingController();
+final TextEditingController _location = TextEditingController();
+final TextEditingController _dateTime = TextEditingController();
 
 class EventForm extends StatefulWidget {
   const EventForm({super.key});
@@ -20,7 +24,7 @@ class _EventFormState extends State<EventForm> {
 
   @override
   Widget build(BuildContext context) {
-    //final Events events = Provider.of(context);
+    final provider = Provider.of<DatabaseProvider>(context, listen: false);
 
     return SafeArea(
         child: Scaffold(
@@ -29,15 +33,15 @@ class _EventFormState extends State<EventForm> {
           child: Column(
             children: [
               TextField(
-                controller: _titleController,
+                controller: _title,
                 decoration: const InputDecoration(hintText: 'Título'),
               ),
               TextField(
-                controller: _locationController,
+                controller: _location,
                 decoration: const InputDecoration(hintText: 'Local'),
               ),
               TextField(
-                controller: _dateTimeController,
+                controller: _dateTime,
                 onTap: () {
                   showDatePicker(
                     context: context,
@@ -61,7 +65,7 @@ class _EventFormState extends State<EventForm> {
                                 selectedTime.minute,
                               );
 
-                              _dateTimeController.text =
+                              _dateTime.text =
                                   combinedDateTime.toIso8601String();
                             }
                           },
@@ -76,14 +80,14 @@ class _EventFormState extends State<EventForm> {
               ),
               ElevatedButton(
                   onPressed: () async {
-                    // Navigator.of(context).popUntil((route) => route.isFirst);
-                    // Map<String, Object?> data = {
-                    //   'titulo': _titleController.text,
-                    //   'local': _locationController.text,
-                    //   'dataHora': _dateTimeController.text
-                    // };
-
-                    // await events.addItem('evento', data);
+                    final file = Event(
+                      id: 0,
+                      title: _title.text,
+                      date: DateTime.parse(_dateTime.text),
+                      local: _location.text,
+                    );
+                    provider.addEvent(file);
+                    Navigator.of(context).pop();
                   },
                   child: Text("Salvar"))
             ],

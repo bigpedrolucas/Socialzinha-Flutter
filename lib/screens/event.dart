@@ -1,8 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:social_app/constants.dart';
 
 enum MenuItem { update, delete }
@@ -19,18 +17,17 @@ class _EventPageState extends State<EventPage> {
 
   @override
   Widget build(BuildContext context) {
-    final Events events = Provider.of(context);
-    final routeArgs =
-        ModalRoute.of(context)?.settings.arguments as Map<String, int>;
-    final id = int.parse(routeArgs['id'].toString());
+    //final routeArgs =
+    //ModalRoute.of(context)?.settings.arguments as Map<String, int>;
+    //final id = int.parse(routeArgs['id'].toString());
 
-    String eventTitle = events.byIndex(id)['titulo'];
-    String dateTime = events.byIndex(id)['dataHora'];
-    String eventLocal = events.byIndex(id)['local'];
-    DateTime parsedDateTime = DateTime.parse(dateTime);
-    String eventDate =
-        DateFormat('dd MMM yyyy', 'pt_BR').format(parsedDateTime);
-    String eventHour = DateFormat('HH:mm').format(parsedDateTime);
+    // String eventTitle = events.byIndex(id)['titulo'];
+    // String dateTime = events.byIndex(id)['dataHora'];
+    // String eventLocal = events.byIndex(id)['local'];
+    // DateTime parsedDateTime = DateTime.parse(dateTime);
+    // String eventDate =
+    //     DateFormat('dd MMM yyyy', 'pt_BR').format(parsedDateTime);
+    // String eventHour = DateFormat('HH:mm').format(parsedDateTime);
 
     return SafeArea(
       child: Scaffold(
@@ -132,7 +129,8 @@ class _EventPageState extends State<EventPage> {
                                       widthFactor: 0.4,
                                       child: CircleAvatar(
                                           radius: 16,
-                                          backgroundColor: AppColors.orangePrimary,
+                                          backgroundColor:
+                                              AppColors.orangePrimary,
                                           child: CircleAvatar(
                                               radius: 14,
                                               backgroundImage: NetworkImage(
@@ -147,7 +145,8 @@ class _EventPageState extends State<EventPage> {
                                           backgroundColor: Colors.white,
                                           child: Text("+1",
                                               style: TextStyle(
-                                                  color: AppColors.orangePrimary,
+                                                  color:
+                                                      AppColors.orangePrimary,
                                                   fontSize: 12,
                                                   fontFamily: 'Roboto',
                                                   fontWeight:
@@ -290,7 +289,8 @@ class _EventsByStatusWidgetState extends State<EventsByStatusWidget> {
                                                   fontFamily: 'Roboto',
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.bold,
-                                                  color: AppColors.graphitePrimary)),
+                                                  color: AppColors
+                                                      .graphitePrimary)),
                                           Text('2 observações',
                                               style: TextStyle(
                                                   fontFamily: 'Roboto',

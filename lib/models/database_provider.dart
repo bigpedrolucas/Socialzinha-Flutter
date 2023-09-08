@@ -32,29 +32,29 @@ class DatabaseProvider with ChangeNotifier {
     await db.transaction((txn) async {
       await txn.execute("""CREATE TABLE $userTable(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-        nome VARCHAR(50),
+        name VARCHAR(50),
         avatarUrl VARCHAR(50)
       )""");
       await txn.execute("""CREATE TABLE $eventTable(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-        titulo VARCHAR(150) NOT NULL,
+        title VARCHAR(150) NOT NULL,
         local VARCHAR(150) NOT NULL,
-        dataHora DATETIME
+        date DATETIME
       )""");
       await txn.execute("""CREATE TABLE $taskTable(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-        evento INTEGER,
+        event INTEGER,
         status INTEGER,
-        titulo VARCHAR(150) NOT NULL,
-        descricao VARCHAR(255) NOT NULL,
-        FOREIGN KEY (evento) REFERENCES evento(id),
+        title VARCHAR(150) NOT NULL,
+        description VARCHAR(255) NOT NULL,
+        FOREIGN KEY (event) REFERENCES event(id),
         FOREIGN KEY (status) REFERENCES status(id)
       )""");
       await txn.execute("""CREATE TABLE $userTaskTable(
-        usuario INTEGER,
-        tarefa INTEGER,
-        FOREIGN KEY (usuario) REFERENCES usuario(id),
-        FOREIGN KEY (tarefa) REFERENCES tarefa(id)
+        user INTEGER,
+        task INTEGER,
+        FOREIGN KEY (user) REFERENCES user(id),
+        FOREIGN KEY (task) REFERENCES task(id)
       )""");
     });
   }
@@ -75,5 +75,30 @@ class DatabaseProvider with ChangeNotifier {
         return _events;
       });
     });
+  }
+
+  Future<void> addEvent(Event event) async {
+    final db = await database;
+    await db.transaction(
+      (txn) async {
+        await txn
+            .insert(
+          eventTable,
+          event.toMap(),
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        )
+            .then(
+          (generatedId) {
+            final file = Event(
+                id: generatedId,
+                title: event.title,
+                local: event.local,
+                date: event.date);
+            _events.add(file);
+            notifyListeners();
+          },
+        );
+      },
+    );
   }
 }

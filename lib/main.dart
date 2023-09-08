@@ -18,7 +18,9 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => DatabaseProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (context) => DatabaseProvider())
+      ],
       child: MaterialApp(
         home: Home(),
         initialRoute: '/',
@@ -29,6 +31,7 @@ class MainApp extends StatelessWidget {
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: const [
           Locale('pt', 'BR'),
