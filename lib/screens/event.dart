@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app/constants.dart';
 
-import '../models/database_provider.dart';
+import '../models/db_provider.dart';
 
 enum MenuItem { update, delete }
 
@@ -67,8 +67,9 @@ class _EventPageState extends State<EventPage> {
                                   initialValue: selectedMenu,
                                   onSelected: (value) async {
                                     if (value == MenuItem.update) {
-                                      Navigator.of(context)
-                                          .pushReplacementNamed('/event-form');
+                                      Navigator.of(context).pushNamed(
+                                          '/event-form',
+                                          arguments: {'id': id});
                                     } else if (value == MenuItem.delete) {
                                       // await events.deleteItem('evento', id);
                                       // Navigator.of(context).popUntil((route) => route.isFirst);

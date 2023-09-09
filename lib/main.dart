@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:social_app/models/database_provider.dart';
+import 'package:social_app/models/db_provider.dart';
 import 'package:social_app/screens/event.dart';
 import 'package:social_app/screens/event_form.dart';
 import 'package:social_app/screens/home.dart';

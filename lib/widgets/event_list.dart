@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:social_app/constants.dart';
-import 'package:social_app/models/database_provider.dart';
+import 'package:social_app/models/db_provider.dart';
 
 class EventList extends StatefulWidget {
   const EventList({super.key});

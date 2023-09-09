@@ -101,4 +101,33 @@ class DatabaseProvider with ChangeNotifier {
       },
     );
   }
+
+  Future<void> updateEvent(Event event) async {
+    final db = await database;
+    await db.transaction(
+      (txn) async {
+        await txn.update(
+          eventTable,
+          event.toMap(),
+          where: 'id = ?',
+          whereArgs: [event.id],
+        ).then(
+          (rowsUpdated) {
+            if (rowsUpdated > 0) {
+              int index = _events.indexWhere((e) => e.id == event.id);
+              if (index != -1) {
+                final file = Event(
+                    id: event.id,
+                    title: event.title,
+                    local: event.local,
+                    date: event.date);
+                _events[index] = file;
+                notifyListeners();
+              }
+            }
+          },
+        );
+      },
+    );
+  }
 }
