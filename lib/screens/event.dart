@@ -1,7 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:social_app/constants.dart';
+
+import '../models/database_provider.dart';
 
 enum MenuItem { update, delete }
 
@@ -17,176 +21,178 @@ class _EventPageState extends State<EventPage> {
 
   @override
   Widget build(BuildContext context) {
-    //final routeArgs =
-    //ModalRoute.of(context)?.settings.arguments as Map<String, int>;
-    //final id = int.parse(routeArgs['id'].toString());
+    final routeArgs =
+        ModalRoute.of(context)?.settings.arguments as Map<String, int>;
+    final id = int.parse(routeArgs['id'].toString());
 
-    // String eventTitle = events.byIndex(id)['titulo'];
-    // String dateTime = events.byIndex(id)['dataHora'];
-    // String eventLocal = events.byIndex(id)['local'];
-    // DateTime parsedDateTime = DateTime.parse(dateTime);
-    // String eventDate =
-    //     DateFormat('dd MMM yyyy', 'pt_BR').format(parsedDateTime);
-    // String eventHour = DateFormat('HH:mm').format(parsedDateTime);
+    return Consumer<DatabaseProvider>(builder: (_, db, __) {
+      var list = db.events;
+      String eventTile = list[id].title;
+      String eventLocal = list[id].local;
+      DateTime dateTime = list[id].date;
+      String eventDate = DateFormat('dd MMM yyyy', 'pt_BR').format(dateTime);
+      String eventHour = DateFormat('HH:mm').format(dateTime);
 
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-            color: AppColors.lightGray,
-            child: Column(children: [
-              Expanded(
-                flex: 3,
-                child: Container(
-                    padding: EdgeInsets.only(bottom: 6),
-                    height: 200,
-                    decoration: BoxDecoration(
-                        color: AppColors.orangePrimary,
-                        borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(32),
-                          bottomLeft: Radius.circular(32),
-                        )),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.arrow_back,
-                                    color: Colors.white, size: 26),
-                                onPressed: () => {
-                                  Navigator.of(context)
-                                      .pushReplacementNamed('/')
-                                },
-                              ),
-                              PopupMenuButton<MenuItem>(
-                                initialValue: selectedMenu,
-                                onSelected: (value) async {
-                                  if (value == MenuItem.update) {
-                                    Navigator.of(context)
-                                        .pushReplacementNamed('/event-form');
-                                  } else if (value == MenuItem.delete) {
-                                    // await events.deleteItem('evento', id);
-                                    // Navigator.of(context).popUntil((route) => route.isFirst);
-                                  }
-                                },
-                                itemBuilder: (context) => [
-                                  PopupMenuItem(
-                                      value: MenuItem.update,
-                                      child: Text('Editar')),
-                                  PopupMenuItem(
-                                      value: MenuItem.delete,
-                                      child: Text('Excluir')),
-                                ],
-                              )
-                              /*IconButton(
-                                icon: Icon(Icons.more_vert,
-                                    color: Colors.white, size: 26),
-                                onPressed: () => {print("options pressed")},
-                              )*/
-                            ],
-                          ),
-                          Column(children: [
-                            Center(
-                                child: Text("eventTitle",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold))),
-                            Padding(padding: EdgeInsets.only(top: 4)),
+      return SafeArea(
+        child: Scaffold(
+          body: Container(
+              color: AppColors.lightGray,
+              child: Column(children: [
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                      padding: EdgeInsets.only(bottom: 6),
+                      height: 200,
+                      decoration: BoxDecoration(
+                          color: AppColors.orangePrimary,
+                          borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(32),
+                            bottomLeft: Radius.circular(32),
+                          )),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
                             Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.location_on,
-                                      color: Colors.white, size: 12),
-                                  Text("eventLocal",
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.arrow_back,
+                                      color: Colors.white, size: 26),
+                                  onPressed: () => {
+                                    Navigator.of(context)
+                                        .pushReplacementNamed('/')
+                                  },
+                                ),
+                                PopupMenuButton<MenuItem>(
+                                  initialValue: selectedMenu,
+                                  onSelected: (value) async {
+                                    if (value == MenuItem.update) {
+                                      Navigator.of(context)
+                                          .pushReplacementNamed('/event-form');
+                                    } else if (value == MenuItem.delete) {
+                                      // await events.deleteItem('evento', id);
+                                      // Navigator.of(context).popUntil((route) => route.isFirst);
+                                    }
+                                  },
+                                  itemBuilder: (context) => [
+                                    PopupMenuItem(
+                                        value: MenuItem.update,
+                                        child: Text('Editar')),
+                                    PopupMenuItem(
+                                        value: MenuItem.delete,
+                                        child: Text('Excluir')),
+                                  ],
+                                )
+                                /*IconButton(
+                                    icon: Icon(Icons.more_vert,
+                                        color: Colors.white, size: 26),
+                                    onPressed: () => {print("options pressed")},
+                                  )*/
+                              ],
+                            ),
+                            Column(children: [
+                              Center(
+                                  child: Text(eventTile,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold))),
+                              Padding(padding: EdgeInsets.only(top: 4)),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.location_on,
+                                        color: Colors.white, size: 12),
+                                    Text(eventLocal,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold)),
+                                  ]),
+                              Padding(padding: EdgeInsets.only(top: 4)),
+                              Center(
+                                  child: Text(eventDate,
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 12,
-                                          fontWeight: FontWeight.bold)),
-                                ]),
-                            Padding(padding: EdgeInsets.only(top: 4)),
-                            Center(
-                                child: Text("eventDate",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold))),
-                            Padding(padding: EdgeInsets.only(top: 4)),
-                            Center(
-                                child: Text('eventHour',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold))),
-                          ]),
-                          Padding(padding: EdgeInsets.only(top: 12)),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                for (int i = 0; i < 3; i++)
+                                          fontWeight: FontWeight.bold))),
+                              Padding(padding: EdgeInsets.only(top: 4)),
+                              Center(
+                                  child: Text('${eventHour}h',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold))),
+                            ]),
+                            Padding(padding: EdgeInsets.only(top: 12)),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  for (int i = 0; i < 3; i++)
+                                    Align(
+                                        widthFactor: 0.4,
+                                        child: CircleAvatar(
+                                            radius: 16,
+                                            backgroundColor:
+                                                AppColors.orangePrimary,
+                                            child: CircleAvatar(
+                                                radius: 14,
+                                                backgroundImage: NetworkImage(
+                                                    'https://i.pravatar.cc/150?img=$i')))),
                                   Align(
-                                      widthFactor: 0.4,
-                                      child: CircleAvatar(
-                                          radius: 16,
-                                          backgroundColor:
-                                              AppColors.orangePrimary,
-                                          child: CircleAvatar(
-                                              radius: 14,
-                                              backgroundImage: NetworkImage(
-                                                  'https://i.pravatar.cc/150?img=$i')))),
-                                Align(
-                                  widthFactor: 0.4,
-                                  child: CircleAvatar(
-                                      radius: 16,
-                                      backgroundColor: AppColors.orangePrimary,
-                                      child: CircleAvatar(
-                                          radius: 14,
-                                          backgroundColor: Colors.white,
-                                          child: Text("+1",
-                                              style: TextStyle(
-                                                  color:
-                                                      AppColors.orangePrimary,
-                                                  fontSize: 12,
-                                                  fontFamily: 'Roboto',
-                                                  fontWeight:
-                                                      FontWeight.bold)))),
-                                )
-                              ]),
-                        ])),
-              ),
-              Expanded(
-                flex: 9,
-                child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.only(top: 28, left: 28, right: 28),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                            width: 250,
-                            child: EventsByStatusWidget(
-                                statusName: 'A FAZER',
-                                statusColor: Colors.pink)),
-                        const SizedBox(width: 28),
-                        Container(
-                            width: 250,
-                            child: EventsByStatusWidget(
-                                statusName: 'EM ANDAMENTO',
-                                statusColor: Colors.blue)),
-                        const SizedBox(width: 28),
-                        Container(
-                            width: 250,
-                            child: EventsByStatusWidget(
-                                statusName: 'CONCLUÍDO',
-                                statusColor: Colors.green)),
-                      ],
-                    )),
-              ),
-            ])),
-      ),
-    );
+                                    widthFactor: 0.4,
+                                    child: CircleAvatar(
+                                        radius: 16,
+                                        backgroundColor:
+                                            AppColors.orangePrimary,
+                                        child: CircleAvatar(
+                                            radius: 14,
+                                            backgroundColor:
+                                                AppColors.graphitePrimary,
+                                            child: Text("+1",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12,
+                                                    fontFamily: 'Roboto',
+                                                    fontWeight:
+                                                        FontWeight.bold)))),
+                                  )
+                                ]),
+                          ])),
+                ),
+                Expanded(
+                  flex: 9,
+                  child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.only(top: 28, left: 28, right: 28),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              width: 250,
+                              child: EventsByStatusWidget(
+                                  statusName: 'A FAZER',
+                                  statusColor: Colors.pink)),
+                          const SizedBox(width: 28),
+                          Container(
+                              width: 250,
+                              child: EventsByStatusWidget(
+                                  statusName: 'EM ANDAMENTO',
+                                  statusColor: Colors.blue)),
+                          const SizedBox(width: 28),
+                          Container(
+                              width: 250,
+                              child: EventsByStatusWidget(
+                                  statusName: 'CONCLUÍDO',
+                                  statusColor: Colors.green)),
+                        ],
+                      )),
+                ),
+              ])),
+        ),
+      );
+    });
   }
 }
 
