@@ -19,7 +19,7 @@ class Event {
       };
 
   // Map to Event
-  factory Event.fromString(Map<String, dynamic> value) => Event(
+  factory Event.fromMap(Map<String, dynamic> value) => Event(
       id: value['id'],
       title: value['title'],
       local: value['local'],

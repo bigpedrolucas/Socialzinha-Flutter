@@ -26,6 +26,7 @@ class _EventFormState extends State<EventForm> {
   Widget build(BuildContext context) {
     final provider = Provider.of<DatabaseProvider>(context, listen: false);
     final routeArgs = ModalRoute.of(context)?.settings.arguments;
+    Event event;
     int id = -1;
 
     return Consumer<DatabaseProvider>(builder: (_, db, __) {
@@ -34,10 +35,12 @@ class _EventFormState extends State<EventForm> {
 
       if (isUpdating) {
         id = int.parse(routeArgs['id'].toString());
-        _title.text = list[id].title;
-        _local.text = list[id].local;
-        _dateTime.text = list[id].date.toString();
+        event = list.firstWhere((e) => e.id == id);
+        _title.text = event.title;
+        _local.text = event.local;
+        _dateTime.text = event.date.toString();
       }
+
       return SafeArea(
           child: Scaffold(
         body: Container(
@@ -93,7 +96,7 @@ class _EventFormState extends State<EventForm> {
                 ElevatedButton(
                     onPressed: () async {
                       final file = Event(
-                        id: (isUpdating) ? id + 1 : 0,
+                        id: (isUpdating) ? id : 0,
                         title: _title.text,
                         date: DateTime.parse(_dateTime.text),
                         local: _local.text,
@@ -102,6 +105,9 @@ class _EventFormState extends State<EventForm> {
                         provider.updateEvent(file);
                       } else {
                         provider.addEvent(file);
+                        _title.text = '';
+                        _local.text = '';
+                        _dateTime.text = '';
                       }
 
                       Navigator.of(context).pop();

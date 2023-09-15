@@ -91,7 +91,7 @@ class _EventListState extends State<EventList> {
                               child: GestureDetector(
                                 onTap: () => {
                                   Navigator.of(context).pushNamed('/event',
-                                      arguments: {'id': index})
+                                      arguments: {'id': list[index].id})
                                 },
                                 child: Container(
                                   width: 147,

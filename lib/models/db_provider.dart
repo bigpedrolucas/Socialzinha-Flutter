@@ -68,7 +68,7 @@ class DatabaseProvider with ChangeNotifier {
         final converted = List<Map<String, dynamic>>.from(data);
         // create a 'Event' from every 'map' in this 'converted'
         List<Event> nList = List.generate(
-            converted.length, (index) => Event.fromString(converted[index]));
+            converted.length, (index) => Event.fromMap(converted[index]));
         // set the value of 'events' to 'nList'
         _events = nList;
         // return the '_events'
@@ -129,5 +129,18 @@ class DatabaseProvider with ChangeNotifier {
         );
       },
     );
+  }
+
+  Future<void> deleteEvent(int id) async {
+    Future.delayed(const Duration(milliseconds: 500), () async {
+      final db = await database;
+      await db.transaction((txn) async {
+        await txn
+            .delete(eventTable, where: 'id = ?', whereArgs: [id]).then((_) {
+          _events.removeWhere((e) => e.id == id);
+          notifyListeners();
+        });
+      });
+    });
   }
 }

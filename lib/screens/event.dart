@@ -23,13 +23,15 @@ class _EventPageState extends State<EventPage> {
   Widget build(BuildContext context) {
     final routeArgs =
         ModalRoute.of(context)?.settings.arguments as Map<String, int>;
+    final provider = Provider.of<DatabaseProvider>(context, listen: false);
     final id = int.parse(routeArgs['id'].toString());
 
     return Consumer<DatabaseProvider>(builder: (_, db, __) {
       var list = db.events;
-      String eventTile = list[id].title;
-      String eventLocal = list[id].local;
-      DateTime dateTime = list[id].date;
+      var event = list.firstWhere((e) => e.id == id);
+      String eventTile = event.title;
+      String eventLocal = event.local;
+      DateTime dateTime = event.date;
       String eventDate = DateFormat('dd MMM yyyy', 'pt_BR').format(dateTime);
       String eventHour = DateFormat('HH:mm').format(dateTime);
 
@@ -71,8 +73,8 @@ class _EventPageState extends State<EventPage> {
                                           '/event-form',
                                           arguments: {'id': id});
                                     } else if (value == MenuItem.delete) {
-                                      // await events.deleteItem('evento', id);
-                                      // Navigator.of(context).popUntil((route) => route.isFirst);
+                                      Navigator.of(context).pop();
+                                      provider.deleteEvent(id);
                                     }
                                   },
                                   itemBuilder: (context) => [
@@ -84,11 +86,6 @@ class _EventPageState extends State<EventPage> {
                                         child: Text('Excluir')),
                                   ],
                                 )
-                                /*IconButton(
-                                    icon: Icon(Icons.more_vert,
-                                        color: Colors.white, size: 26),
-                                    onPressed: () => {print("options pressed")},
-                                  )*/
                               ],
                             ),
                             Column(children: [
